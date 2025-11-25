@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy – HealthFlow</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f4f9ff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      background: #0b8bd7;
+      color: white;
+      text-align: center;
+      padding: 1.5rem 2rem;
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 900px;
+      background: white;
+      margin-top: 2rem;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+      line-height: 1.8;
+      color: #333;
+    }
+
+    h1 {
+      color: #0b8bd7;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+
+    h2 {
+      color: #0b8bd7;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      font-size: 1.3rem;
+      border-bottom: 2px solid #0b8bd7;
+      padding-bottom: 0.5rem;
+    }
+
+    .last-updated {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    p {
+      margin: 0.8rem 0;
+    }
+
+    ul, ol {
+      margin: 0.8rem 0;
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin: 0.5rem 0;
+    }
+
+    .highlight {
+      background: #e3f2fd;
+      padding: 1rem;
+      border-left: 4px solid #0b8bd7;
+      margin: 1rem 0;
+      border-radius: 5px;
+    }
+
+    .status-good {
+      color: #3ac47d;
+      font-weight: 600;
+    }
+
+    .status-warning {
+      color: #ffb74d;
+      font-weight: 600;
+    }
+
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    a {
+      color: #0b8bd7;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      padding: 0.5rem 1rem;
+      background: #0b8bd7;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .back-link:hover {
+      background: #0873b3;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        font-size: 1.3rem;
+        padding: 1rem;
+      }
+
+      .container {
+        width: 96%;
+        padding: 1rem;
+        margin-top: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    💙 HealthFlow Privacy Policy
+  </header>
+
+  <div class="container">
+    <a href="index.html" class="back-link">← Back to App</a>
+
+    <h1>Privacy Policy</h1>
+    <p class="last-updated">Last Updated: November 25, 2025</p>
+
+    <h2>1. Introduction</h2>
+    <p>
+      HealthFlow ("we," "our," or "the app") is a blood pressure and health tracking application designed to help users manage their health data, particularly for those monitoring IgA Nephropathy. We are committed to protecting your privacy and ensuring you have a positive experience on our platform.
+    </p>
+    <p>
+      This Privacy Policy explains how we collect, use, store, and protect your information when you use HealthFlow.
+    </p>
+
+    <h2>2. Data Collection & Storage</h2>
+    <p>
+      HealthFlow collects the following personal health information:
+    </p>
+    <ul>
+      <li><strong>Account Information:</strong> Email address, password</li>
+      <li><strong>Profile Information:</strong> Full name, age, gender, height, weight</li>
+      <li><strong>Health Data:</strong> Blood pressure readings (systolic, diastolic, pulse), date, and time</li>
+      <li><strong>Calculated Data:</strong> BMI (Body Mass Index)</li>
+    </ul>
+
+    <div class="highlight">
+      <p><strong>Where Your Data Is Stored:</strong></p>
+      <p>
+        By default, all data is stored locally on your device using the browser's <code>sessionStorage</code> API. 
+        This means your information <span class="status-good">never leaves your device</span> and is 
+        <span class="status-good">automatically deleted when your browser tab or window is closed</span>.
+      </p>
+    </div>
+
+    <h2>3. Data Security & Protection</h2>
+    
+    <h3>Current Security Measures:</h3>
+    <ul>
+      <li>✅ <span class="status-good">Temporary Storage:</span> Using sessionStorage (deleted on browser close)</li>
+      <li>✅ <span class="status-good">No Cloud Transmission:</span> Data stays on your device by default</li>
+      <li>✅ <span class="status-good">Multi-User Isolation:</span> Each user's data is kept separate</li>
+      <li>✅ <span class="status-good">HTTPS Ready:</span> Secure transmission when deployed</li>
+      <li>⚠️ <span class="status-warning">Plain Text Passwords:</span> Currently not encrypted (see recommendations below)</li>
+    </ul>
+
+    <h2>4. Data Retention</h2>
+    <p>
+      <strong>Local Storage (Default):</strong> All data stored in sessionStorage is automatically deleted when:
+    </p>
+    <ul>
+      <li>You close the browser tab or window</li>
+      <li>You close the entire browser application</li>
+      <li>You clear your browser's session storage manually</li>
+      <li>You restart your device</li>
+    </ul>
+
+    <p>
+      <strong>Backend Storage (Optional):</strong> If you choose to use our optional backend service (MongoDB + server), 
+      data persists until you explicitly delete your account. See section 5 for more details.
+    </p>
+
+    <h2>5. Backend Integration (Optional)</h2>
+    <p>
+      HealthFlow can optionally integrate with a backend database (MongoDB Atlas) for persistent, cross-device access. 
+      If enabled:
+    </p>
+    <ul>
+      <li>Data is encrypted during transmission (HTTPS)</li>
+      <li>Passwords are hashed using bcrypt before storage</li>
+      <li>Authentication uses secure JWT tokens</li>
+      <li>Data is protected with secure HTTP-only cookies</li>
+    </ul>
+
+    <p>
+      <strong>Your choice:</strong> You can use HealthFlow with temporary local storage (default) or opt-in to backend 
+      synchronization for permanent cross-device storage.
+    </p>
+
+    <h2>6. For Maximum Privacy</h2>
+    <p>
+      We recommend:
+    </p>
+    <ul>
+      <li>🔒 <strong>Use Private/Incognito Browsing:</strong> All data automatically deleted when window closes</li>
+      <li>🔒 <strong>Avoid Shared Devices:</strong> Use only on personal computers/phones</li>
+      <li>🔒 <strong>Clear Browser Cache:</strong> Periodically clear browser data for extra privacy</li>
+      <li>🔒 <strong>Use HTTPS:</strong> Only access HealthFlow over secure HTTPS connections</li>
+    </ul>
+
+    <h2>7. Security Recommendations for Production</h2>
+    <p>
+      Before deploying HealthFlow in a production healthcare environment, we recommend:
+    </p>
+    <ol>
+      <li>Implement password hashing (bcryptjs or Argon2)</li>
+      <li>Use HTTPS/TLS for all communications</li>
+      <li>Deploy a secure backend with authentication (JWT or OAuth2)</li>
+      <li>Use a managed database service (MongoDB Atlas) with encryption</li>
+      <li>Implement input validation and sanitization</li>
+      <li>Add audit logging for all data access</li>
+      <li>Consider HIPAA compliance if used for clinical purposes</li>
+      <li>Implement secure password recovery mechanisms</li>
+    </ol>
+
+    <h2>8. Your Rights & Data Deletion</h2>
+    <p>
+      You have the right to:
+    </p>
+    <ul>
+      <li>✅ Access your data by opening browser DevTools (F12 → Application → Session Storage)</li>
+      <li>✅ Delete your data by closing your browser</li>
+      <li>✅ Export your data (manual copy from the app)</li>
+      <li>✅ Opt-out of backend synchronization</li>
+    </ul>
+
+    <h2>9. Third-Party Services</h2>
+    <p>
+      HealthFlow uses the following third-party services:
+    </p>
+    <ul>
+      <li><strong>Chart.js</strong> (charting) – <a href="https://www.chartjs.org/privacy.html" target="_blank">Privacy Policy</a></li>
+      <li><strong>Google Fonts</strong> (typography) – <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a></li>
+      <li><strong>CDN Services</strong> (jsdelivr) – <a href="https://www.jsdelivr.com/" target="_blank">Terms</a></li>
+    </ul>
+
+    <h2>10. Contact & Questions</h2>
+    <p>
+      If you have questions about this Privacy Policy or your data, please contact us through the HealthFlow app 
+      or visit our repository on <a href="https://github.com" target="_blank">GitHub</a>.
+    </p>
+
+    <h2>11. Policy Changes</h2>
+    <p>
+      We may update this Privacy Policy periodically. Changes will be posted here with an updated "Last Updated" date. 
+      Your continued use of HealthFlow constitutes acceptance of changes.
+    </p>
+
+    <div class="highlight">
+      <p><strong>🎯 Bottom Line:</strong></p>
+      <p>
+        HealthFlow prioritizes your privacy. By default, your data is temporary and stored only on your device. 
+        You have full control over your information and can delete it anytime by closing your browser.
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 HealthFlow — Protecting Your Privacy & Health 💙</p>
+    <p><a href="index.html">Back to App</a></p>
+  </footer>
+</body>
+</html>

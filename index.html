@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HealthFlow – BP & IgA Nephropathy Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #0b8bd7;
+      --light: #f4f9ff;
+      --success: #3ac47d;
+      --warning: #ffb74d;
+      --danger: #e53935;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: var(--light);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .header-title {
+      flex: 1;
+      text-align: center;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .header-buttons button {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: 0.2s;
+    }
+
+    .header-buttons button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 800px;
+      background: white;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    h2 {
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    input, select,
+    button {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #0873b3;
+    }
+
+    .card {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #f7faff;
+      text-align: center;
+    }
+
+    .status {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .status.normal {
+      color: var(--success);
+    }
+
+    .status.elevated {
+      color: var(--warning);
+    }
+
+    .status.high {
+      color: var(--danger);
+    }
+
+    #trendBox {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #eef6ff;
+      font-size: 0.95rem;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    canvas {
+      margin-top: 20px;
+      max-height: 300px;
+    }
+
+    .bmi-result {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #e3f2fd;
+    }
+
+    .history-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: white;
+    }
+
+    .history-table th, .history-table td {
+      padding: 12px 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .history-table th {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .history-table tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    .history-table tr:hover {
+      background: #f0f8ff;
+    }
+
+    .history-table td span {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .profile-info {
+      background: #e3f2fd;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      text-align: left;
+    }
+
+    .profile-info p {
+      margin: 0.5rem 0;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 13px;
+      color: gray;
+      text-align: center;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      header {
+        padding: 0.75rem 1rem;
+        font-size: 1.05rem;
+      }
+
+      .header-buttons { gap: 6px; }
+
+      .container {
+        width: 96%;
+        max-width: 100%;
+        padding: 1rem;
+        margin-top: 1rem;
+        border-radius: 12px;
+      }
+
+      form {
+        grid-template-columns: 1fr;
+      }
+
+      input, select, button {
+        font-size: 16px;
+        padding: 12px;
+      }
+
+      button {
+        min-height: 44px;
+        width: 100%;
+      }
+
+      canvas { max-height: 220px; }
+
+      .history-table th, .history-table td { 
+        padding: 8px 6px; 
+        font-size: 11px; 
+      }
+
+      .history-table {
+        font-size: 12px;
+      }
+
+      .profile-info { font-size: 14px; }
+    }
+
+    @media (min-width: 601px) and (max-width: 900px) {
+      header { font-size: 1.25rem; padding: 0.9rem 1.5rem; }
+      .container { max-width: 700px; padding: 1.25rem; }
+      form { grid-template-columns: repeat(2, 1fr); }
+      canvas { max-height: 260px; }
+    }
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-title">💓 HealthFlow – BP + IgA Nephropathy Tracker</div>
+    <div class="header-buttons">
+      <button id="logoutBtn" style="display: none;">Logout</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="page active">
+      <h2>Login / Register</h2>
+      <form id="authForm">
+        <input id="authEmail" type="email" placeholder="Email" required />
+        <input id="authPassword" type="password" placeholder="Password" required />
+        <button type="button" id="loginBtn">Login</button>
+        <button type="button" id="registerBtn">Register</button>
+      </form>
+    </div>
+
+    <!-- PROFILE SETUP PAGE -->
+    <div id="profilePage" class="page">
+      <h2>Complete Your Profile</h2>
+      <form id="profileForm">
+        <input id="fullName" type="text" placeholder="Full Name" required />
+        <input id="age" type="number" placeholder="Age" min="1" max="120" required />
+        <select id="gender" required>
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+        <input id="height" type="number" placeholder="Height (cm)" min="50" max="250" required />
+        <input id="weight" type="number" placeholder="Weight (kg)" min="20" max="300" required />
+        <button type="submit">Save Profile</button>
+      </form>
+      <div class="bmi-result" id="bmiResult" style="display: none;"></div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div id="dashboardPage" class="page">
+      <h2>Dashboard</h2>
+      
+      <!-- Profile Info -->
+      <div class="profile-info" id="profileInfo"></div>
+
+      <!-- BP Input Form -->
+      <form id="bpForm" style="margin-top: 1.5rem;">
+        <input id="systolic" type="number" placeholder="Systolic (mmHg)" required />
+        <input id="diastolic" type="number" placeholder="Diastolic (mmHg)" required />
+        <input id="pulse" type="number" placeholder="Pulse (bpm)" required />
+        <input id="date" type="date" required />
+        <input id="time" type="time" required />
+        <button type="submit">Save BP Reading</button>
+      </form>
+
+      <!-- Latest BP Card -->
+      <div class="card" id="latest">
+        <p class="status">No record yet</p>
+        <p id="tip"></p>
+      </div>
+
+      <!-- IgA Nephropathy Trend -->
+      <div id="trendBox">
+        <strong>IgA Nephropathy Trend Analysis:</strong>
+        <p id="trendText">Add at least 2 readings to analyze kidney BP stability.</p>
+      </div>
+
+      <!-- Long-Term Progress -->
+      <div id="progressBox" class="card" style="margin-top: 1rem; background: #e3f2fd;">
+        <strong>Long-Term Progress:</strong>
+        <p id="progressText">Add at least 6 readings for a progress report.</p>
+      </div>
+
+      <!-- BP Chart -->
+      <canvas id="chart"></canvas>
+
+      <!-- BP History Table -->
+      <h3 style="margin-top: 2rem; color: var(--primary);">BP Reading History</h3>
+      <div class="history-table-wrapper">
+        <table class="history-table" id="historyTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Systolic</th>
+              <th>Diastolic</th>
+              <th>Pulse</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <tr><td colspan="6">No records yet</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Edit Profile Button -->
+      <button id="editProfileBtn" style="margin-top: 2rem; width: 100%; padding: 12px;">Edit Profile</button>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 HealthFlow — For IgA Nephropathy & BP Wellness 💙
+    <br/>
+    <a href="test-runner.html" style="color: #0b8bd7; text-decoration: none; font-size: 0.85rem;">🧪 Run Tests</a>
+     &nbsp; | &nbsp;
+     <a href="privacy-policy.html" style="color: #0b8bd7; text-decoration: none; font-size: 0.85rem;">📋 Privacy Policy</a>
+  </footer>
+
+  <script src="index.js" defer></script>
+</body>
+</html>

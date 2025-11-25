@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HealthFlow Test Suite</title>
+  <style>
+    :root {
+      --primary: #0b8bd7;
+      --light: #f4f9ff;
+      --success: #3ac47d;
+      --warning: #ffb74d;
+      --danger: #e53935;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: var(--light);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      color: var(--primary);
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 2rem;
+      justify-content: center;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #0873b3;
+    }
+
+    .btn-secondary {
+      background: #e0e0e0;
+      color: #333;
+    }
+
+    .btn-secondary:hover {
+      background: #d0d0d0;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 2rem;
+    }
+
+    .summary-card {
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .summary-card h3 {
+      margin: 0;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+    }
+
+    .summary-card .number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0.5rem 0;
+    }
+
+    .card-total {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .card-passed {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .card-failed {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .card-rate {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .results {
+      margin-top: 2rem;
+    }
+
+    .results h2 {
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+    }
+
+    .test-result {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .test-result.pass {
+      background: #d4edda;
+      border-left-color: var(--success);
+      color: #155724;
+    }
+
+    .test-result.fail {
+      background: #f8d7da;
+      border-left-color: var(--danger);
+      color: #721c24;
+    }
+
+    .test-status {
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      min-width: 50px;
+    }
+
+    .test-message {
+      flex: 1;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>🏥 HealthFlow Test Suite</h1>
+      <p class="subtitle">Unit & Integration Tests for BP Analysis, Authentication & Profile Management</p>
+    </header>
+
+    <div class="controls">
+      <button class="btn-primary" onclick="runTests()">▶ Run All Tests</button>
+      <button class="btn-secondary" onclick="clearResults()">🗑 Clear Results</button>
+    </div>
+
+    <div id="summary" class="summary" style="display: none;">
+      <div class="summary-card card-total">
+        <h3>Total Tests</h3>
+        <div class="number" id="totalTests">0</div>
+      </div>
+      <div class="summary-card card-passed">
+        <h3>Passed</h3>
+        <div class="number" id="passedTests">0</div>
+      </div>
+      <div class="summary-card card-failed">
+        <h3>Failed</h3>
+        <div class="number" id="failedTests">0</div>
+      </div>
+      <div class="summary-card card-rate">
+        <h3>Success Rate</h3>
+        <div class="number" id="successRate">0%</div>
+      </div>
+    </div>
+
+    <div class="results">
+      <div id="resultsContainer" class="no-results">Click "Run All Tests" to start testing</div>
+    </div>
+
+    <a href="index.html" class="link">← Back to HealthFlow App</a>
+  </div>
+
+  <footer>
+    <p>© 2025 HealthFlow — Test Suite for IgA Nephropathy BP Tracking</p>
+  </footer>
+
+  <!-- Load test functions -->
+  <script>
+    // Import functions from main app for testing
+    const SYSTOLIC_NORMAL = 120;
+    const DIASTOLIC_NORMAL = 80;
+    const SYSTOLIC_ELEVATED = 130;
+    const SYSTOLIC_STAGE1 = 140;
+    const DIASTOLIC_STAGE1 = 90;
+    const KIDNEY_RISK_SYSTOLIC = 130;
+    const KIDNEY_RISK_DIASTOLIC = 80;
+
+    // Copy all functions from index.js for testing
+    function classify(s, d) {
+      if (s < SYSTOLIC_NORMAL && d < DIASTOLIC_NORMAL) return "Normal";
+      if (s < SYSTOLIC_ELEVATED && d < DIASTOLIC_NORMAL) return "Elevated";
+      if (s < SYSTOLIC_STAGE1 || d < DIASTOLIC_STAGE1) return "Stage 1 Hypertension";
+      return "Stage 2 Hypertension";
+    }
+
+    function calculateBMIValue(height, weight) {
+      return weight / ((height / 100) ** 2);
+    }
+
+    function getBMIStatus(bmi) {
+      if (bmi < 18.5) return 'Underweight';
+      if (bmi < 25) return 'Normal';
+      if (bmi < 30) return 'Overweight';
+      return 'Obese';
+    }
+
+    function averageBP(data) {
+      if (data.length === 0) return { systolic: 0, diastolic: 0 };
+      const totalSys = data.reduce((a, b) => a + b.systolic, 0);
+      const totalDia = data.reduce((a, b) => a + b.diastolic, 0);
+      return {
+        systolic: Math.round(totalSys / data.length),
+        diastolic: Math.round(totalDia / data.length),
+      };
+    }
+
+    function determineBPTrend(latest, previous) {
+      const deltaSys = latest.systolic - previous.systolic;
+      const deltaDia = latest.diastolic - previous.diastolic;
+      if (Math.abs(deltaSys) < 5 && Math.abs(deltaDia) < 5) return "Stable";
+      if (deltaSys <= -5 && deltaDia <= -5) return "Improving";
+      if (deltaSys >= 5 || deltaDia >= 5) return "Worsening";
+      return "Fluctuating";
+    }
+
+    function assessKidneyRisk(records) {
+      const recentRecords = records.slice(0, 5);
+      const avg = averageBP(recentRecords);
+      const isHighRisk = avg.systolic >= KIDNEY_RISK_SYSTOLIC || avg.diastolic >= KIDNEY_RISK_DIASTOLIC;
+      if (isHighRisk) {
+        return `⚠️ Higher kidney strain likely (avg ≥ ${KIDNEY_RISK_SYSTOLIC}/${KIDNEY_RISK_DIASTOLIC}). Consult your doctor.`;
+      } else {
+        return "✅ Good! Your recent average suggests kidney pressure is being managed.";
+      }
+    }
+
+    function analyzeBPTrend(records) {
+      if (records.length < 2) {
+        return {
+          trend: "Not enough data",
+          risk: "—",
+          message: "Add at least 2 readings to see your short-term trend.",
+        };
+      }
+      const latest = records[0];
+      const previous = records[1];
+      const trend = determineBPTrend(latest, previous);
+      const kidneyRisk = assessKidneyRisk(records);
+      return { trend, risk: kidneyRisk, message: trend };
+    }
+
+    function analyzeLongTermProgress(records) {
+      if (records.length < 6) {
+        return "Add at least 6 readings for a long-term progress report.";
+      }
+      const recentRecords = records.slice(0, 6).reverse();
+      const firstHalf = recentRecords.slice(0, 3);
+      const secondHalf = recentRecords.slice(3, 6);
+      const avgFirst = averageBP(firstHalf);
+      const avgSecond = averageBP(secondHalf);
+      const sysTrend = avgSecond.systolic - avgFirst.systolic;
+      const diaTrend = avgSecond.diastolic - avgFirst.diastolic;
+      if (sysTrend < -5 && diaTrend < -5) {
+        return `✅ Great progress!`;
+      }
+      if (sysTrend > 5 || diaTrend > 5) {
+        return `🚨 Your average BP has risen`;
+      }
+      return `Your BP is stable`;
+    }
+  </script>
+
+  <!-- Load full test suite -->
+  <script src="tests.js"></script>
+
+  <script>
+    function runTests() {
+      const results = runAllTests();
+      displayResults(results);
+    }
+
+    function displayResults(results) {
+      // Show summary
+      document.getElementById('summary').style.display = 'grid';
+      document.getElementById('totalTests').textContent = results.total;
+      document.getElementById('passedTests').textContent = results.passed;
+      document.getElementById('failedTests').textContent = results.failed;
+      document.getElementById('successRate').textContent = `${((results.passed / results.total) * 100).toFixed(1)}%`;
+
+      // Display individual results
+      const resultsContainer = document.getElementById('resultsContainer');
+      resultsContainer.innerHTML = results.results.map(r => `
+        <div class="test-result ${r.status.toLowerCase()}">
+          <div class="test-status">${r.status}</div>
+          <div class="test-message">${r.message}</div>
+        </div>
+      `).join('');
+    }
+
+    function clearResults() {
+      document.getElementById('summary').style.display = 'none';
+      document.getElementById('resultsContainer').innerHTML = 'Click "Run All Tests" to start testing';
+      TestRunner.reset();
+    }
+  </script>
+</body>
+</html>

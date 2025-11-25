@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "healthflow",
+  "version": "1.0.0",
+  "description": "Blood Pressure Tracker for IgA Nephropathy Management with KDIGO-aligned thresholds",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "start": "cd server && npm start",
+    "dev": "cd server && npm run dev",
+    "test": "node tests.js",
+    "install-all": "npm install && cd server && npm install",
+    "build": "echo 'Frontend is static, no build needed'",
+    "deploy": "echo 'Commit and push to trigger Vercel deployment: git push origin main'"
+  },
+  "keywords": [
+    "blood-pressure",
+    "health-tracking",
+    "iga-nephropathy",
+    "KDIGO",
+    "health-app",
+    "medical-tracking"
+  ],
+  "author": "HealthFlow Team",
+  "license": "Open Source",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/healthflow.git"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
